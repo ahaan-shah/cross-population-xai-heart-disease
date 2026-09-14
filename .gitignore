@@ -9,3 +9,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+
+# Working notes — local only, not part of the project repo
+reports/

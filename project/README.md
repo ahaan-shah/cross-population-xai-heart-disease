@@ -70,6 +70,7 @@ file written under different settings would not be caught. Confirm it prints
 ```
 .
 ├── README.md
+├── reproduction-notes.md     full rebuild guide: setup, run order, checkpoints, troubleshooting
 ├── requirements.txt          pinned; install from this, not by hand
 ├── code/
 │   ├── phase0.py             Phase 0 — raw -> interim + missingness audit
@@ -87,9 +88,7 @@ file written under different settings would not be caught. Confirm it prints
 ├── results/
 │   ├── tables/               all CSVs      [generated]
 │   └── figures/              all PNGs      [generated]
-└── reports/
-    ├── docs/                 per-phase notes — report-ready prose + viva cribs
-    └── reproducibility.md    determinism guarantees, randomness control, library traps
+└── reports/                  working notes (not tracked in git)
 ```
 
 Only `data/raw/` and `code/` are inputs. **Everything else is generated** — deleting
