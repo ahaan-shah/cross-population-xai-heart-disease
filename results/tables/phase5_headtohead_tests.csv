@@ -1,4 +1,0 @@
-comparison,mean_diff,ci95,wilcoxon_p,significant
-SHAP vs PFI (cross-pop Spearman),0.214,0.055,0.0,True
-SHAP vs LIME (cross-pop Spearman),0.241,0.057,0.0,True
-Framework B vs A (consensus Spearman),0.111,0.033,0.0,True
