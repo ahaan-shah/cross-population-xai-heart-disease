@@ -1,0 +1,2 @@
+rule,highest_mean_AUC,tie_tolerance,statistically_tied,tiebreak,selected,selected_AUC_avg,selected_AUC_hungary,selected_F1_avg,caveat
+best mean AUC across both cohorts; ties broken on fitness-for-purpose and explainer compatibility,LR,0.01,LR RF NB SVM,nonlinear (LIME surrogate must have something to approximate) AND tree-based (exact deterministic SHAP TreeExplainer),RF,0.874,0.891,0.727,"default-threshold F1 0.727 trails LR/NB (~0.76); selection is AUC-led and threshold-independent, and the purpose is explanation, not deployment"
