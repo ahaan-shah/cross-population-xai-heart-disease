@@ -53,6 +53,14 @@ def shap_explain(rf, Xte):
 # figures
 # --------------------------------------------------------------------------- #
 def _beeswarm(expl1, cohort, path):
+    # shap.plots.beeswarm shuffles and jitters the plotted points using the UNSEEDED
+    # global NumPy RNG (np.random.shuffle / np.random.randn inside beeswarm(), see
+    # shap/plots/_beeswarm.py), and the modern API exposes no rng argument to control
+    # it -- only the legacy summary_legacy() does. Without this seed the two beeswarm
+    # PNGs are the ONLY artefacts in the entire project that differ between otherwise
+    # byte-identical runs: the SHAP values behind them are unchanged, just re-jittered.
+    # Seeding here makes the pipeline reproducible down to the pixel.
+    np.random.seed(SEED)
     shap.plots.beeswarm(expl1, show=False, max_display=10)
     plt.title(f'SHAP summary (beeswarm) — {cohort}')
     plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches='tight'); plt.close()
