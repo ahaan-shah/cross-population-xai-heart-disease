@@ -1,7 +1,7 @@
 # Cross-Population Evaluation of Explainable AI Frameworks for Heart Disease Prediction
 
-Reproduction run **001** — a clean, fully code-driven re-execution of the entire analysis
-from `data/raw/` upward, in a pinned local environment.
+A fully code-driven analysis pipeline: everything below `data/raw/` is generated, in a pinned
+environment, and verified to rebuild byte-identically from scratch.
 
 **Team:** Aarushi Batra (230902022) · Ahaan Anand Shah (230902072) · Joshi Arya Vivek (230902064)
 **Guide:** Dr. Dashrathraj K Shetty
@@ -89,7 +89,7 @@ file written under different settings would not be caught. Confirm it prints
 │   └── figures/              all PNGs      [generated]
 └── reports/
     ├── docs/                 per-phase notes — report-ready prose + viva cribs
-    └── reproduction-notes.md what this run changed vs the original, and what it confirmed
+    └── reproducibility.md    determinism guarantees, randomness control, library traps
 ```
 
 Only `data/raw/` and `code/` are inputs. **Everything else is generated** — deleting
