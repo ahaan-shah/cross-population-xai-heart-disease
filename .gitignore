@@ -1,0 +1,10 @@
+# Python environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# OS noise
+.DS_Store
+Thumbs.db

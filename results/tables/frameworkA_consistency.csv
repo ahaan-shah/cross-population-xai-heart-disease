@@ -1,0 +1,5 @@
+method,comparison,spearman,kendall,top3_overlap,top3_jaccard,top5_overlap,top5_jaccard
+PFI,cross-population (Clev vs Hung),0.552,0.378,2/3,0.5,3/5,0.429
+LIME,cross-population (Clev vs Hung),0.612,0.378,2/3,0.5,4/5,0.667
+PFI vs LIME,cross-method @ Cleveland,0.733,0.6,2/3,0.5,4/5,0.667
+PFI vs LIME,cross-method @ Hungary,0.733,0.511,3/3,1.0,5/5,1.0

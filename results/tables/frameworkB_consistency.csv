@@ -1,0 +1,4 @@
+row,spearman,kendall,top3_overlap,top3_jaccard,top5_overlap,top5_jaccard
+SHAP — cross-population,0.842,0.733,2/3,0.5,4/5,0.667
+Framework A consensus — cross-population,0.602,0.452,2/3,0.5,4/5,0.667
+Framework B consensus — cross-population,0.571,0.405,2/3,0.5,4/5,0.667
