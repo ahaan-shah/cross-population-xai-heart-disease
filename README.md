@@ -6,7 +6,8 @@ environment, and verified to rebuild byte-identically from scratch.
 **Team:** Aarushi Batra (230902022) · Ahaan Anand Shah (230902072) · Joshi Arya Vivek (230902064)
 
 **Guide:** Dr. Dashrathraj K Shetty
-Minor Project — Data Science minor specialisation, Department of Biomedical Engineering.
+
+**Minor Project** — Data Science Minor Specialisation, Department of Biomedical Engineering.
 
 ---
 
@@ -60,7 +61,7 @@ principal investigator at each contributing institution:
 - **University Hospital, Basel, Switzerland** — Matthias Pfisterer, M.D.
 - **V.A. Medical Center, Long Beach and Cleveland Clinic Foundation** — Robert Detrano, M.D., Ph.D.
 
-This is a condition of use, not a courtesy. It must appear in the paper.
+This is a condition of use.
 
 ### Which files, and why the "processed" ones
 
@@ -156,7 +157,7 @@ The two files the analysis reads, exactly as committed:
 Verify with `md5sum data/raw/processed.*.data`. If these differ from the values above, the inputs
 have changed and no downstream result should be trusted until that is explained.
 
-### How to cite
+### Citations
 
 > A. Janosi, W. Steinbrunn, M. Pfisterer, and R. Detrano, "Heart Disease," UCI Machine Learning
 > Repository, 1989, doi: 10.24432/C52P4X.
