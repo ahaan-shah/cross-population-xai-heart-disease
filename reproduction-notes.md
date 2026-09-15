@@ -56,7 +56,6 @@ each other, while the relative data paths (`data/clean/...`) resolve against you
 Running from inside `code/` breaks the second half of that.
 
 ```bash
-cd project
 .venv/bin/python code/phase0.py              # raw → interim, missingness audit      ~2 s
 .venv/bin/python code/data.py                # interim → clean                       ~1 s
 .venv/bin/python code/models.py              # 7 classifiers, 10-fold CV, selection  ~30 s
