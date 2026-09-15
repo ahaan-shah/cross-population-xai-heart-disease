@@ -30,6 +30,151 @@ frameworks and the first head-to-head of A vs B on the same UCI datasets.
 
 ---
 
+## The data
+
+### Source
+
+Everything in this study comes from the **UCI Heart Disease dataset**, donated to the UCI Machine
+Learning Repository in 1989 and still the dominant benchmark for cardiac classification.
+
+| | |
+|---|---|
+| Repository page | https://archive.ics.uci.edu/dataset/45/heart+disease |
+| DOI | [10.24432/C52P4X](https://doi.org/10.24432/C52P4X) |
+| Donated | 1989 (documentation dated 22 July 1988, David Aha) |
+| Licence | Creative Commons Attribution 4.0 International (CC BY 4.0) |
+| Files used here | `processed.cleveland.data`, `processed.hungarian.data` |
+| Also present, unused | `processed.switzerland.data`, `processed.va.data` |
+
+The raw files are committed under `data/raw/` and are never modified. Everything else in `data/`
+is regenerated from them by `code/phase0.py` and `code/data.py`.
+
+### Attribution required by the data providers
+
+The dataset documentation (`data/raw/heart-disease.names`) carries an explicit **publication
+request** from the people who collected the records. Any publication using this data must name the
+principal investigator at each contributing institution:
+
+- **Hungarian Institute of Cardiology, Budapest** — Andras Janosi, M.D.
+- **University Hospital, Zurich, Switzerland** — William Steinbrunn, M.D.
+- **University Hospital, Basel, Switzerland** — Matthias Pfisterer, M.D.
+- **V.A. Medical Center, Long Beach and Cleveland Clinic Foundation** — Robert Detrano, M.D., Ph.D.
+
+This is a condition of use, not a courtesy. It must appear in the paper.
+
+### Which files, and why the "processed" ones
+
+Each of the four cohorts exists in two forms: a full file with **76 raw attributes** and a
+`processed.*` file carrying the **14 attributes** used in essentially all published work on this
+data. We use the `processed.*` files.
+
+That choice matters for one specific reason. Cholesterol recorded as `0`, meaning "not measured"
+rather than a real value, is a well-known hazard in this dataset family — a zero that silently
+corrupts any imputation or model that trusts it. It is present in the **raw** Hungarian file. The
+**processed** files correctly encode those values as `?`. `code/phase0.py` checks for impossible
+zeros in `chol`, `trestbps` and `thalach` and finds none in either cohort, so the hazard does not
+apply to this analysis.
+
+### Cohorts analysed
+
+| | Cleveland | Hungary |
+|---|---|---|
+| Source file | `processed.cleveland.data` | `processed.hungarian.data` |
+| Rows as delivered | 303 | 294 |
+| After de-duplication | 303 | 293 (one exact duplicate removed) |
+| Disease prevalence | 45.9% | 36.2% |
+| Missing values | none, after the Strategy-A column drop | light; see below |
+
+Switzerland (123 rows) and Long Beach VA (200 rows) are committed for completeness because they
+are part of the same donation and are the natural extension to a third and fourth cohort. **No
+code path reads them.**
+
+### Attributes
+
+Of the 14 attributes in the processed files, this study uses **10 features plus the target**.
+Codings are those defined in `heart-disease.names`:
+
+| Feature | Meaning | Coding |
+|---|---|---|
+| `age` | Age | years |
+| `sex` | Sex | 1 = male, 0 = female |
+| `cp` | Chest pain type | 1 = typical angina, 2 = atypical angina, 3 = non-anginal pain, 4 = asymptomatic |
+| `trestbps` | Resting blood pressure on admission | mm Hg |
+| `chol` | Serum cholesterol | mg/dl |
+| `fbs` | Fasting blood sugar > 120 mg/dl | 1 = true, 0 = false |
+| `restecg` | Resting electrocardiographic result | 0 = normal, 1 = ST-T wave abnormality, 2 = probable/definite left ventricular hypertrophy (Estes' criteria) |
+| `thalach` | Maximum heart rate achieved | bpm |
+| `exang` | Exercise-induced angina | 1 = yes, 0 = no |
+| `oldpeak` | ST depression induced by exercise relative to rest | mm |
+| `num` (target) | Angiographic disease status | 0 = < 50% diameter narrowing; 1–4 = > 50% narrowing. **Binarised as `num > 0`.** |
+
+**Three attributes are deliberately dropped**, and this is the single most consequential decision
+in the study:
+
+| Dropped | Meaning | Missing in Cleveland | Missing in Hungary |
+|---|---|---|---|
+| `slope` | Slope of peak exercise ST segment (1 = upsloping, 2 = flat, 3 = downsloping) | 0.0% | **64.6%** |
+| `ca` | Number of major vessels (0–3) coloured by fluoroscopy | 1.3% | **99.0%** |
+| `thal` | Thalassemia (3 = normal, 6 = fixed defect, 7 = reversible defect) | 0.7% | **90.5%** |
+
+In Hungary, `ca` is missing for 291 of 294 patients — the column effectively does not exist there.
+Imputing a 99%-absent column would not recover the feature, it would manufacture one, and any
+importance later attributed to it would measure the imputation rather than the patients. Since the
+question is whether explanations agree *across populations*, the comparison has to run on a feature
+set both populations actually possess.
+
+The cost is stated openly: `ca` and `thal` are among the strongest predictors reported in
+Cleveland-only work. **Every finding in this project is scoped to the shared ten-feature space.**
+
+### Residual missingness
+
+After the column drop, Cleveland has no missing values at all — those three columns held its only
+gaps. Hungary retains light missingness in 33 of 294 records (11.2%), imputed with statistics fit
+**separately within each cohort** so population-specific distributions are preserved:
+
+| Feature | % missing in Hungary | Imputed with | Value used |
+|---|---|---|---|
+| `chol` | 7.8% | median | 243 |
+| `fbs` | 2.7% | mode | 0 |
+| `trestbps` | 0.3% | median | 130 |
+| `restecg` | 0.3% | mode | 0 |
+| `thalach` | 0.3% | median | 140 |
+| `exang` | 0.3% | mode | 0 |
+
+Phase 6 revisits `chol` directly, since it is the only feature with meaningful imputation exposure
+and therefore the only one where a real-versus-artefact question genuinely arises.
+
+### Integrity
+
+The two files the analysis reads, exactly as committed:
+
+```
+2d91a8ff69cfd9616aa47b59d6f843db  data/raw/processed.cleveland.data   303 rows
+22e96bee155b5973568101c93b3705f6  data/raw/processed.hungarian.data   294 rows
+```
+
+Verify with `md5sum data/raw/processed.*.data`. If these differ from the values above, the inputs
+have changed and no downstream result should be trusted until that is explained.
+
+### How to cite
+
+> A. Janosi, W. Steinbrunn, M. Pfisterer, and R. Detrano, "Heart Disease," UCI Machine Learning
+> Repository, 1989, doi: 10.24432/C52P4X.
+
+The clinical study behind the data collection is worth citing alongside it, since it was itself an
+international multi-site validation:
+
+> R. Detrano et al., "International application of a new probability algorithm for the diagnosis of
+> coronary artery disease," *American Journal of Cardiology*, vol. 64, no. 5, pp. 304–310, 1989.
+
+### Ethics and provenance
+
+The records are fully de-identified, were collected by the four institutions named above, and are
+publicly redistributable under CC BY 4.0. This study is a secondary analysis of public data; it
+involved no human participants, no new data collection and no attempt at re-identification.
+
+---
+
 ## Quick start
 
 ```bash
