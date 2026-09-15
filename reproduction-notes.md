@@ -10,7 +10,7 @@ your output against the checkpoints below. The whole pipeline takes about **6 mi
 
 ## 1. What you need
 
-- **Python 3.12.** The pin matters (see §7); 3.12.14 is the version of record.
+- **Python 3.12.** The pin matters (see S7); 3.12.14 is the version of record.
 - **~500 MB** of disk for the virtual environment.
 - No GPU, no network access after install, no credentials, no external data downloads. The raw
   UCI files are committed in `data/raw/`.
@@ -137,7 +137,7 @@ Framework B looking *worse* here is the expected single-split result, and Phase 
 Hungary `PFI↔SHAP 0.430` is likewise expected and resolves to 0.746 over 30 splits.
 
 ### Phase 5 — the headline
-`aggregate` must print `aggregating over 30 splits`. If it says any other number, see §6.
+`aggregate` must print `aggregating over 30 splits`. If it says any other number, see S6.
 
 ```
 PFI   Spearman 0.624 ± 0.054    top3 2.00/3   top5 3.73/5
@@ -170,7 +170,7 @@ To test it:
 ```bash
 git status --porcelain          # confirm clean first
 rm -rf data/interim data/clean results
-# ...re-run all eight commands from §3...
+# ...re-run all eight commands from S3...
 git status --porcelain          # expect: empty
 ```
 
@@ -202,7 +202,7 @@ is genuinely wrong — check your library versions first.
 | `permutation_importance` (PFI) | `random_state=42`, 30 repeats |
 | `LimeTabularExplainer` | `random_state=42` at construction |
 | SHAP `TreeExplainer` | Exact and deterministic by design — no sampling, no seed needed |
-| `shap.plots.beeswarm` | Not seedable; handled explicitly, see §7.1 |
+| `shap.plots.beeswarm` | Not seedable; handled explicitly, see S7.1 |
 
 **Fold shuffling is not optional.** The Hungarian source file is sorted by age. Without
 `shuffle=True`, every cross-validation fold would be an age band and every Phase-2 estimate would be
@@ -222,17 +222,17 @@ rm results/tables/phase5_raw_per_split.csv results/tables/phase5_importances_lon
 written under *different settings* will not be caught. Always check the printed count.
 
 **`FileNotFoundError` on `frameworkA_pfi.csv`.**
-You ran `frameworkB.py` before `explain.py`. Follow the order in §3.
+You ran `frameworkB.py` before `explain.py`. Follow the order in S3.
 
 **`ModuleNotFoundError` for a project module (e.g. `No module named 'explain'`).**
 You ran from inside `code/`. Run from the repository root as `python code/x.py`.
 
 **An `AssertionError` from `phase0.py`, `data.py` or `models.py`.**
-These are deliberate guards, not bugs — see §8. Read the message; it names the assumption that
+These are deliberate guards, not bugs — see S8. Read the message; it names the assumption that
 broke.
 
 **Figures look different but CSVs match.**
-Check your matplotlib version. If only the two SHAP beeswarms differ, see §7.1.
+Check your matplotlib version. If only the two SHAP beeswarms differ, see S7.1.
 
 ---
 
